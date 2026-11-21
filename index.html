@@ -140,18 +140,14 @@ footer{margin-top:1.5rem; color:var(--ink-2); font-size:.9rem; text-align:center
 .flow .n{background:var(--kraft-soft);border:2px dashed var(--kraft);border-radius:12px;padding:.5rem .8rem;text-align:center}
 .flow .a{text-align:center;color:var(--ink-2);font-size:1.4rem;line-height:1.2}
 .flow .n.g{background:var(--ok-soft);border:2px solid var(--ok)}
-.sel{border:2px solid var(--ink-2);border-radius:12px;background:var(--surface);margin:.75rem 0;overflow:hidden;font-size:.95rem}
-.sel .ttl{padding:.4rem .8rem;background:var(--unknown-soft);font-weight:700;border-bottom:1px solid var(--line)}
-.sel .opt{padding:.5rem .8rem;border-bottom:1px solid var(--line);line-height:1.5}
-.sel .opt:last-child{border-bottom:none}
-.sel .opt small{display:block;color:var(--ink-2);font-size:.8rem}
-.sel .opt.hit{background:var(--warn-soft);outline:3px solid var(--warn);outline-offset:-3px;font-weight:700}
-.sel .opt.cur{background:var(--accent-soft)}
-.btnmock{display:inline-block;border:2px solid var(--accent);border-radius:999px;padding:.1rem .9rem;font-weight:700;color:var(--accent);background:var(--surface)}
-.dlg{border:2px solid var(--ink-2);border-radius:12px;padding:.7rem .9rem;background:var(--surface);margin:.75rem 0}
-.dlg .bt{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}
-.dlg .bt span{border:2px solid var(--accent);border-radius:10px;padding:.2rem .9rem;font-weight:700}
-.dlg .bt span.p{background:var(--accent);color:#fff}
+.shot{margin:.75rem 0}
+.shot img{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
+.shot figcaption{font-size:.85rem;color:var(--ink-2);margin-top:.3rem;line-height:1.6}
+.shot{margin-left:0;margin-right:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin:.75rem 0}
+.two .card{margin:0;min-width:0}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+main:has(.two){max-width:60rem}
 table{width:100%;border-collapse:collapse;margin:.75rem 0;font-size:1rem}
 th,td{border:1px solid var(--line);padding:.55rem .6rem;text-align:left;vertical-align:top}
 th{background:var(--unknown-soft)}
@@ -173,10 +169,9 @@ dl{margin:.4rem 0}dt{font-weight:700;margin-top:.6rem}dd{margin:0 0 0 .2rem}
 <h2>全体の流れ</h2>
 <div class="flow">
   <div class="n">① 止まった文を見て、このページの話か確かめる</div><div class="a">↓</div>
-  <div class="n">② 設定の「一般」で「フルアクセス」をオン</div><div class="a">↓</div>
-  <div class="n">③ 入力欄の左下で「フルアクセス」を選ぶ</div><div class="a">↓</div>
-  <div class="n">④ 新しいチャットで、いつもの指示文をそのまま貼る</div><div class="a">↓</div>
-  <div class="n g">⑤ 終わったら「代わりに承認」に戻す</div>
+  <div class="n">② 「フルアクセス」に切り替える(やり方は2つ。どちらか1つでOK)</div><div class="a">↓</div>
+  <div class="n">③ 新しいチャットで、いつもの指示文をそのまま貼る</div><div class="a">↓</div>
+  <div class="n g">④ 終わったら「代わりに承認」に戻す</div>
 </div>
 
 <h2>なぜ止まるの？(たとえ話)</h2>
@@ -210,18 +205,36 @@ dl{margin:.4rem 0}dt{font-weight:700;margin-top:.6rem}dd{margin:0 0 0 .2rem}
 
 <section class="stepcard" id="s2">
   <span class="num">ステップ 2</span>
-  <h2>設定で「フルアクセス」を選べるようにする</h2>
-  <p>はじめは、権限のメニューに「フルアクセス」が出てきません。先に出るようにします。(まだ使うことにはなりません)</p>
-  <ol class="steps">
-    <li>アプリの「設定」を開きます。</li>
-    <li>左の一覧の「個人設定」から「一般」を開きます。</li>
-    <li>いちばん上の「権限」に、「デフォルト権限」と「フルアクセス」の2つのスイッチがあります。「フルアクセス」をオンにします。</li>
-    <li>確かめる画面が出たら、「確認」をおします。</li>
-  </ol>
-  <div class="card info"><p>これで、入力欄の左下のメニューに「フルアクセス」が出るようになります。</p></div>
+  <h2>フルアクセスに切り替える(やり方は2つ。どちらか1つでOK)</h2>
+  <p>入力欄から切り替える方法Aが、かんたんです。方法Aでうまくいかないときは、方法Bを使います。</p>
+  <div class="two">
+    <div class="card info">
+      <p><b>方法A 入力欄から(かんたん)</b></p>
+      <ol class="steps">
+        <li>入力欄の左下、「＋」のすぐ右のボタンをおします。(今は「代わりに承認」と出ています)</li>
+        <li>「ChatGPT のアクションの承認方法」というメニューが出ます。</li>
+        <li>「フルアクセス」をえらびます。</li>
+        <li>確かめる画面が出たら、「確認」をおします。</li>
+      </ol>
+      <figure class="shot"><img src="img/a-button.png" alt="入力欄の左下、「＋」の右にある赤い枠で囲んだ「フルアクセス」のボタン" width="1400" height="194"><figcaption>赤い枠が、おすボタンです(切り替えたあとの画面です)。画面は Mac 版(2026-11-21)。Windows 版は見た目が少しちがうことがあります。</figcaption></figure>
+      <figure class="shot"><img src="img/a-menu.png" alt="「ChatGPT のアクションの承認方法」のメニュー。承認を求める、代わりに承認、フルアクセスの3つが並び、フルアクセスが赤い枠で囲まれている" width="1400" height="396"><figcaption>開いたメニューです。赤い枠の「フルアクセス」をえらびます。画面は Mac 版(2026-11-21)。Windows 版は見た目が少しちがうことがあります。</figcaption></figure>
+    </div>
+    <div class="card info">
+      <p><b>方法B 設定から</b></p>
+      <ol class="steps">
+        <li>アプリの「設定」を開きます。</li>
+        <li>左の「個人設定」の中の「一般」を開きます。</li>
+        <li>いちばん上の「権限」で、「フルアクセス」のスイッチをオンにします。</li>
+        <li>確かめる画面が出たら、「確認」をおします。</li>
+      </ol>
+      <figure class="shot"><img src="img/b-settings.png" alt="設定の「一般」画面。「権限」の中の「フルアクセス」のスイッチが赤い枠で囲まれている" width="1400" height="329"><figcaption>赤い枠のスイッチをオンにします。画面は Mac 版(2026-11-21)。Windows 版は見た目が少しちがうことがあります。</figcaption></figure>
+      <p>メニューに「フルアクセス」が出てこないときは、方法Bを使います。</p>
+    </div>
+  </div>
+  <div class="card ok"><p>オンになると、「フルアクセスがオンです」という注意が出ます。出ていれば成功です。</p></div>
   <details>
-    <summary>メニューの名前が見つからないとき</summary>
-    <p>アプリの版によって、メニューの名前や場所が少しちがうことがあります。アカウントや歯車のマークのあたりから「設定」を開けることがあります。設定画面の上の「検索」に「フルアクセス」と入れてさがし、そのスイッチをオンにしてください。(アプリの版によっては「構成」の中に「入力欄にフルアクセスを表示」と出ることもあります)</p>
+    <summary>メニューや設定の名前が見つからないとき</summary>
+    <p>アプリの版によって、メニューの名前や場所が少しちがうことがあります。設定画面の上の「検索」に「フルアクセス」と入れてさがし、そのスイッチをオンにしてください。</p>
   </details>
   <details>
     <summary>「requirements.toml により無効になっています」「管理対象」と出るとき</summary>
@@ -231,42 +244,22 @@ dl{margin:.4rem 0}dt{font-weight:700;margin-top:.6rem}dd{margin:0 0 0 .2rem}
 
 <section class="stepcard" id="s3">
   <span class="num">ステップ 3</span>
-  <h2>入力欄の左下で「フルアクセス」を選ぶ</h2>
-  <ol class="steps">
-    <li>チャットの入力欄の左下、「＋」のすぐ右にある「代わりに承認」のボタンをおします。(マウスを重ねると「権限を変更」と出ます)</li>
-    <li>「Codex アクションの承認方法」という小さなメニューが開きます。</li>
-    <li>「フルアクセス」をえらびます。</li>
-    <li>「フルアクセスをオンにしますか？」と出たら「確認」をおします。</li>
-  </ol>
-  <p>メニューは、だいたいこんな見た目です。</p>
-  <div class="sel" aria-label="権限メニューのイメージ">
-    <div class="ttl">Codex アクションの承認方法</div>
-    <div class="opt">承認を求める<small>外部ファイルの編集やインターネットの利用について、常に確認を求めます</small></div>
-    <div class="opt cur">代わりに承認 (いま選ばれている)<small>安全でない可能性があると検出された操作についてのみ確認を求めます</small></div>
-    <div class="opt hit">👉 フルアクセス<small>インターネットとコンピューター上のすべてのファイルに無制限でアクセスします</small></div>
-    <div class="opt">カスタム（config.toml）<small>config.toml で定義された権限を使用します</small></div>
-  </div>
-  <p>確認の画面のイメージです。</p>
-  <div class="dlg"><b>フルアクセスをオンにしますか？</b>
-    <div class="bt"><span class="p">確認</span><span>キャンセルする</span></div></div>
-  <div class="card ok"><p>オンになると、「フルアクセスがオンです」という注意が出ます。出ていれば成功です。</p></div>
-  <div class="card warn"><p>「承認を求める」を選んだときは、入力欄に「承認を依頼」と出ます。同じ種類のメニューです。</p></div>
-</section>
-
-<section class="stepcard" id="s4">
-  <span class="num">ステップ 4</span>
   <h2>新しいチャットで、いつもの指示文をもう一度貼る</h2>
   <ol class="steps">
     <li>新しいチャットを開きます。</li>
     <li>いつも貼っている指示文を、そのまま貼ります。変えたり足したりしません。</li>
   </ol>
-  <div class="card info"><p>止まったチャットでやり直すより、新しいチャットのほうが確実です。ただし新しいチャットだけでは直りません。ステップ 3 を済ませてからです。</p></div>
+  <div class="card info"><p>止まったチャットでやり直すより、新しいチャットのほうが確実です。ただし新しいチャットだけでは直りません。ステップ 2 を済ませてからです。</p></div>
 </section>
 
-<section class="stepcard" id="s5">
-  <span class="num">ステップ 5</span>
+<section class="stepcard" id="s4">
+  <span class="num">ステップ 4</span>
   <h2>翻訳が終わったら「代わりに承認」に戻す</h2>
-  <p>ステップ 3 と同じボタンをおして、「代わりに承認」をえらびます。</p>
+  <p>戻し方も2つあります。どちらか1つでOKです。</p>
+  <ul class="plain">
+    <li>入力欄の左下のボタンをおして、「代わりに承認」をえらびます。</li>
+    <li>または、設定の「一般」の「権限」で、「フルアクセス」のスイッチをオフにします。</li>
+  </ul>
   <div class="card ng">
     <p>アプリの説明では、フルアクセスがオンの間、AI は承認なしにパソコンのどのファイルでも編集でき、ネットにつながるコマンドも実行できます。安全のため、翻訳が終わったら必ず戻します。</p>
   </div>
@@ -286,7 +279,7 @@ dl{margin:.4rem 0}dt{font-weight:700;margin-top:.6rem}dd{margin:0 0 0 .2rem}
 <h2>用語メモ</h2>
 <dl>
   <dt>ENOTFOUND / getaddrinfo failed</dt><dd>「ネットの住所が見つからない」という意味のエラー文です。ネットにつながっていないときに出ます。</dd>
-  <dt>権限</dt><dd>Codex がどこまで勝手にやってよいかのきまりです。入力欄の左下のボタンで切り替えます。</dd>
+  <dt>権限</dt><dd>Codex がどこまで勝手にやってよいかのきまりです。入力欄の左下のボタンか、設定の「一般」で切り替えます。</dd>
   <dt>フルアクセス</dt><dd>ネットもパソコン中のファイルも、制限なしで使える権限です。</dd>
   <dt>config.toml</dt><dd>Codex の設定ファイルです。今回の止まり方には効かないので、さわらなくて大丈夫です。</dd>
 </dl>
