@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Codex で翻訳が ENOTFOUND で止まったときの、ネット接続の直し方を1つずつ説明するページです。">
+<title>翻訳が「ENOTFOUND」で止まったときの直し方</title>
+<style>
+:root{
+  color-scheme:light dark;
+  --bg:#FAF9F6; --surface:#FFFFFF; --ink:#22272E; --ink-2:#5A6472;
+  --line:#E3E1DA; --accent:#2C55A6; --accent-soft:#EBF0FA;
+  --kraft:#8A6A3B; --kraft-soft:#F5EFE3;
+  --ok:#2E7D4F; --ok-soft:#E8F3EC;
+  --warn:#9A6A0A; --warn-soft:#FBF3DF;
+  --risk:#B34040; --risk-soft:#F9ECEC;
+  --unknown:#6B7280; --unknown-soft:#EEEFF1;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#171A1F; --surface:#1F242B; --ink:#E8EAED; --ink-2:#9AA4B0;
+    --line:#343B44; --accent:#7FA3E8; --accent-soft:#243248;
+    --kraft:#C9A76A; --kraft-soft:#2E2820;
+    --ok:#7CC49A; --ok-soft:#20312A;
+    --warn:#D9B36A; --warn-soft:#332C1D;
+    --risk:#E09090; --risk-soft:#382426;
+    --unknown:#9AA1AB; --unknown-soft:#2A2E34;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#171A1F; --surface:#1F242B; --ink:#E8EAED; --ink-2:#9AA4B0;
+  --line:#343B44; --accent:#7FA3E8; --accent-soft:#243248;
+  --kraft:#C9A76A; --kraft-soft:#2E2820;
+  --ok:#7CC49A; --ok-soft:#20312A;
+  --warn:#D9B36A; --warn-soft:#332C1D;
+  --risk:#E09090; --risk-soft:#382426;
+  --unknown:#9AA1AB; --unknown-soft:#2A2E34;
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#FAF9F6; --surface:#FFFFFF; --ink:#22272E; --ink-2:#5A6472;
+  --line:#E3E1DA; --accent:#2C55A6; --accent-soft:#EBF0FA;
+  --kraft:#8A6A3B; --kraft-soft:#F5EFE3;
+  --ok:#2E7D4F; --ok-soft:#E8F3EC;
+  --warn:#9A6A0A; --warn-soft:#FBF3DF;
+  --risk:#B34040; --risk-soft:#F9ECEC;
+  --unknown:#6B7280; --unknown-soft:#EEEFF1;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic UI","Yu Gothic","Noto Sans JP",sans-serif;
+  font-size:18px; line-height:1.8;
+}
+main{max-width:40rem; margin:0 auto; padding:1.5rem 1rem 3rem;}
+header.top{margin-bottom:1.25rem;}
+h1{font-size:1.5rem; line-height:1.5; margin:0 0 .4rem; font-weight:700;}
+.sub{margin:0; color:var(--ink-2);}
+h2{font-size:1.4rem; line-height:1.5; margin:0 0 .75rem; font-weight:700;}
+h2:focus{outline:none}
+h3{font-size:1.1rem; margin:1.25rem 0 .4rem;}
+p{margin:.6rem 0;}
+a{color:var(--accent); overflow-wrap:anywhere; word-break:break-all;}
+.progress{display:inline-block; font-weight:700; font-size:.95rem; color:var(--accent); background:var(--accent-soft); border-radius:999px; padding:.15rem .9rem; margin:0 0 1rem;}
+.no-js-only{display:block}
+.js .no-js-only{display:none}
+.js-only{display:none}
+.js .js-only{display:block}
+.js .step{display:none}
+.js .step.current{display:block}
+.step{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:1.25rem 1rem; margin-bottom:1.25rem;}
+.card{border-radius:12px; padding:.9rem 1rem; margin:.75rem 0; border:1px solid var(--line); background:var(--surface);}
+.card.ng{background:var(--risk-soft); border-color:var(--risk); color:var(--ink);}
+.card.ok{background:var(--ok-soft); border-color:var(--ok);}
+.card.warn{background:var(--warn-soft); border-color:var(--warn);}
+.card.info{background:var(--accent-soft); border-color:var(--accent);}
+.card.kraft{background:var(--kraft-soft); border-color:var(--kraft);}
+.card.unknown{background:var(--unknown-soft); border-color:var(--unknown);}
+.card p:first-child{margin-top:0}
+.card p:last-child{margin-bottom:0}
+.label{display:inline-block; font-size:.85rem; font-weight:700; border-radius:6px; padding:.05rem .6rem; background:var(--warn-soft); color:var(--warn); border:1px solid var(--warn);}
+.picture{display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:.5rem; font-size:1.1rem; text-align:center; margin:.75rem 0;}
+.picture .box{background:var(--kraft-soft); border:2px dashed var(--kraft); border-radius:12px; padding:.5rem .8rem; min-width:7rem;}
+.picture .box b{display:block; font-size:2rem; line-height:1.3;}
+.picture .arrow{font-size:1.6rem; color:var(--ink-2);}
+button, .btn{
+  font:inherit; font-weight:700; min-height:56px; width:100%;
+  border-radius:14px; border:2px solid var(--accent); background:var(--accent); color:#fff;
+  padding:.7rem 1rem; cursor:pointer; margin:.5rem 0; text-align:center; line-height:1.5;
+  display:block;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) button.ok,:root:not([data-theme="light"]) button.primary,:root:not([data-theme="light"]) .btn.primary{color:#10151C;}
+}
+:root[data-theme="dark"] button.ok,:root[data-theme="dark"] button.primary{color:#10151C;}
+button.secondary{background:var(--surface); color:var(--accent);}
+button.ok{background:var(--ok); border-color:var(--ok);}
+button.help{background:var(--warn-soft); color:var(--warn); border-color:var(--warn);}
+button.small{min-height:48px; font-size:.95rem; font-weight:600;}
+button.fork{text-align:left; background:var(--surface); color:var(--ink); border-color:var(--accent);}
+button.fork .t{display:block; font-size:1.1rem;}
+button:focus-visible, summary:focus-visible, a:focus-visible, .linkbtn:focus-visible{outline:3px solid var(--warn); outline-offset:2px;}
+.inl{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.9rem; background:var(--unknown-soft); border:1px solid var(--line); border-radius:6px; padding:.05rem .35rem; overflow-wrap:anywhere; word-break:break-all;}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.9rem; background:var(--unknown-soft); border:1px solid var(--line); border-radius:8px; padding:.5rem .7rem; margin:.4rem 0 0; display:block; font-weight:400; color:var(--ink); overflow-wrap:anywhere; word-break:break-all; line-height:1.6;}
+pre.mono, textarea.mono{white-space:pre-wrap; margin:.5rem 0; width:100%;}
+textarea.mono{min-height:11rem; resize:vertical;}
+.nav{margin-top:1.25rem; border-top:1px solid var(--line); padding-top:.75rem;}
+.nav-links{display:flex; flex-wrap:wrap; justify-content:space-between; gap:.5rem;}
+.linkbtn{background:none; border:none; color:var(--accent); text-decoration:underline; min-height:48px; width:auto; padding:.4rem .6rem; margin:0; font-weight:600; font-size:1rem; display:inline-block;}
+.js .nav{display:block}
+html:not(.js) button[data-go]{display:none}
+html:not(.js) .nav, html:not(.js) .copybtn, html:not(.js) .branch-btns{display:none}
+html:not(.js) .step{border-left:6px solid var(--accent);}
+html:not(.js) .reveal{display:block !important}
+.js .reveal{display:none}
+.js .reveal.show{display:block}
+.copy-msg{font-size:.95rem; min-height:1.4em; color:var(--ok); margin:.2rem 0;}
+.copy-msg.fail{color:var(--risk);}
+ul.plain{padding-left:1.2em; margin:.4rem 0;}
+ol.steps{padding-left:1.4em; margin:.4rem 0;}
+ol.steps li{margin:.5rem 0;}
+details{border:1px solid var(--line); border-radius:12px; padding:.2rem .9rem; background:var(--surface); margin:.75rem 0;}
+summary{cursor:pointer; font-weight:700; padding:.7rem 0; min-height:48px;}
+.foot-wrap{margin-top:2rem;}
+footer{margin-top:1.5rem; color:var(--ink-2); font-size:.9rem; text-align:center;}
+.restart{text-align:center; margin-top:.5rem;}
+.picture.nowrap{flex-wrap:nowrap; gap:.25rem;}
+.picture.nowrap .box{flex:1 1 0; min-width:0;}
+@media(max-width:420px){.picture .box{min-width:5rem;padding:.4rem .5rem} .picture.nowrap .box{min-width:0; padding:.4rem .2rem; font-size:.85rem} .picture.nowrap .box b{font-size:1.6rem} .picture.nowrap .arrow{font-size:1.2rem}}
+.big-emoji{font-size:2.5rem; line-height:1.2;}
+
+.js .step{display:block}
+.stepcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.25rem 1rem;margin:1.25rem 0}
+.num{display:inline-block;background:var(--accent);color:#fff;font-weight:700;border-radius:999px;padding:.1rem .9rem;margin-bottom:.4rem}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .num{color:#10151C}}
+:root[data-theme="dark"] .num{color:#10151C}
+.flow{display:flex;flex-direction:column;align-items:stretch;gap:.3rem;margin:.75rem 0}
+.flow .n{background:var(--kraft-soft);border:2px dashed var(--kraft);border-radius:12px;padding:.5rem .8rem;text-align:center}
+.flow .a{text-align:center;color:var(--ink-2);font-size:1.4rem;line-height:1.2}
+.flow .n.g{background:var(--ok-soft);border:2px solid var(--ok)}
+.sel{border:2px solid var(--ink-2);border-radius:12px;background:var(--surface);margin:.75rem 0;overflow:hidden;font-size:.95rem}
+.sel .ttl{padding:.4rem .8rem;background:var(--unknown-soft);font-weight:700;border-bottom:1px solid var(--line)}
+.sel .opt{padding:.5rem .8rem;border-bottom:1px solid var(--line);line-height:1.5}
+.sel .opt:last-child{border-bottom:none}
+.sel .opt small{display:block;color:var(--ink-2);font-size:.8rem}
+.sel .opt.hit{background:var(--warn-soft);outline:3px solid var(--warn);outline-offset:-3px;font-weight:700}
+.sel .opt.cur{background:var(--accent-soft)}
+.btnmock{display:inline-block;border:2px solid var(--accent);border-radius:999px;padding:.1rem .9rem;font-weight:700;color:var(--accent);background:var(--surface)}
+.dlg{border:2px solid var(--ink-2);border-radius:12px;padding:.7rem .9rem;background:var(--surface);margin:.75rem 0}
+.dlg .bt{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}
+.dlg .bt span{border:2px solid var(--accent);border-radius:10px;padding:.2rem .9rem;font-weight:700}
+.dlg .bt span.p{background:var(--accent);color:#fff}
+table{width:100%;border-collapse:collapse;margin:.75rem 0;font-size:1rem}
+th,td{border:1px solid var(--line);padding:.55rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--unknown-soft)}
+td.m{text-align:center;font-size:1.4rem;width:3.5rem}
+dl{margin:.4rem 0}dt{font-weight:700;margin-top:.6rem}dd{margin:0 0 0 .2rem}
+</style>
+</head>
+<body>
+<main>
+<header class="top">
+  <h1>翻訳が「ENOTFOUND」で止まったときの直し方(Codex のネット接続)</h1>
+  <p class="sub">ChatGPT アプリの Codex で翻訳スキルを動かしている人向けです。1つずつ、順番にやれば大丈夫です。Windows でも Mac でも同じです。</p>
+</header>
+
+<div class="card ok">
+  <p><b>まず安心してください。</b>この止まり方のとき、シートには何も書きこまれていません。シートは安全です。シートの行や列を消したり、作り直したりしないでください。</p>
+</div>
+
+<h2>全体の流れ</h2>
+<div class="flow">
+  <div class="n">① 止まった文を見て、このページの話か確かめる</div><div class="a">↓</div>
+  <div class="n">② 設定で「入力欄にフルアクセスを表示」をオン</div><div class="a">↓</div>
+  <div class="n">③ 入力欄の下で「フルアクセス」を選ぶ</div><div class="a">↓</div>
+  <div class="n">④ 新しいチャットで、いつもの指示文をそのまま貼る</div><div class="a">↓</div>
+  <div class="n g">⑤ 終わったら「代わりに承認」に戻す</div>
+</div>
+
+<h2>なぜ止まるの？(たとえ話)</h2>
+<div class="card kraft">
+  <div class="picture">
+    <div class="box"><b>🤖</b>Codex</div><span class="arrow">→</span>
+    <div class="box"><b>🚪</b>ネットの<br>出入り口</div><span class="arrow">→</span>
+    <div class="box"><b>🖼️</b>商品の画像<br>カテゴリの資料</div>
+  </div>
+  <p>入力欄の下に「権限」を選ぶボタンがあります。公式の説明では、Codex は初期状態でネットがオフで動きます。「代わりに承認」のままだと、商品の画像やカテゴリの資料を取りにいけず、途中で止まることがあります。「フルアクセス」は公式に「インターネットとすべてのファイルに無制限でアクセス」と説明されています。AI のミスでも、あなたのミスでもありません。</p>
+</div>
+
+<h2>やっても直らないこと</h2>
+<table>
+<tr><th>やること</th><th>直る?</th></tr>
+<tr><td>新しいチャットを開くだけ</td><td class="m">❌</td></tr>
+<tr><td>Codex に「HTTPS接続を有効にしてください」と頼む</td><td class="m">❌</td></tr>
+<tr><td>config.toml を書き換える(このモードでは効きません)</td><td class="m">❌</td></tr>
+<tr><td>権限を「フルアクセス」に切り替える</td><td class="m">⭕️</td></tr>
+</table>
+
+<section class="stepcard" id="s1">
+  <span class="num">ステップ 1</span>
+  <h2>止まった文を見分ける</h2>
+  <p>Codex の返事に、次のどれかの文字が入っていますか?</p>
+  <span class="mono">ENOTFOUND<br>getaddrinfo failed<br>外部ネットワークが無効<br>DNS の名前解決に失敗</span>
+  <p>よくある返事は「商品画像やカテゴリの資料を取得できなかったので、書きこむ前に止めました」という内容です。シートの読みこみはできているのに、書きこみはされていません。</p>
+  <div class="card ok"><p>⭕️ 入っている → ステップ 2 へ進みます。</p></div>
+  <div class="card warn"><p>❌ 入っていない(「シートが見つからない」「403」など) → <a href="https://naokijodan.github.io/ebay-translation-stop-fix/" target="_blank" rel="noopener">別のページ「翻訳が止まったときの直し方」</a>を見てください。</p></div>
+</section>
+
+<section class="stepcard" id="s2">
+  <span class="num">ステップ 2</span>
+  <h2>設定で「フルアクセス」を選べるようにする</h2>
+  <p>はじめは、権限のメニューに「フルアクセス」が出てきません。先に出るようにします。(まだ使うことにはなりません)</p>
+  <ol class="steps">
+    <li>アプリの「設定」を開きます。</li>
+    <li>左の一覧から「構成」を開きます。</li>
+    <li>「権限」という見出しのところにある「入力欄にフルアクセスを表示」をオンにします。</li>
+    <li>「フルアクセスを利用可能にしますか？」と出たら、「確認」をおします。(やめるときは「キャンセル」)</li>
+  </ol>
+  <div class="card info"><p>「これをオンにすると、権限メニューにフルアクセスが追加されます。フルアクセスがオンになるわけではありません。」と書いてあります。ここでは、メニューに出るだけです。</p></div>
+  <details>
+    <summary>メニューの名前が見つからないとき</summary>
+    <p>アプリの版によって、メニューの名前や場所が少しちがうことがあります。アカウントや歯車のマークのあたりから「設定」を開けることがあります。「入力欄にフルアクセスを表示」という文字をさがしてオンにしてください。</p>
+  </details>
+  <details>
+    <summary>「requirements.toml により無効になっています」「管理対象」と出るとき</summary>
+    <p>会社や組織の設定で決められていて、自分では切り替えられません。ここで止まって、講師に連絡してください。(下の「もし直らなかったら」へ)</p>
+  </details>
+</section>
+
+<section class="stepcard" id="s3">
+  <span class="num">ステップ 3</span>
+  <h2>入力欄の下で「フルアクセス」を選ぶ</h2>
+  <ol class="steps">
+    <li>チャットの入力欄の下にある「代わりに承認」のボタンをおします。(マウスを重ねると「権限を変更」と出ます)</li>
+    <li>「Codex アクションの承認方法」という小さなメニューが開きます。</li>
+    <li>「フルアクセス」をえらびます。</li>
+    <li>「フルアクセスをオンにしますか？」と出たら「確認」をおします。</li>
+  </ol>
+  <p>メニューは、だいたいこんな見た目です。</p>
+  <div class="sel" aria-label="権限メニューのイメージ">
+    <div class="ttl">Codex アクションの承認方法</div>
+    <div class="opt">承認を求める<small>外部ファイルの編集やインターネットの利用について、常に確認を求めます</small></div>
+    <div class="opt cur">代わりに承認 (いま選ばれている)<small>安全でない可能性があると検出された操作についてのみ確認を求めます</small></div>
+    <div class="opt hit">👉 フルアクセス<small>インターネットとコンピューター上のすべてのファイルに無制限でアクセスします</small></div>
+    <div class="opt">カスタム（config.toml）<small>config.toml で定義された権限を使用します</small></div>
+  </div>
+  <p>確認の画面のイメージです。</p>
+  <div class="dlg"><b>フルアクセスをオンにしますか？</b>
+    <div class="bt"><span class="p">確認</span><span>キャンセルする</span></div></div>
+  <div class="card ok"><p>オンになると、「フルアクセスがオンです」という注意が出ます。出ていれば成功です。</p></div>
+  <div class="card warn"><p>「承認を求める」を選んだときは、入力欄に「承認を依頼」と出ます。同じ種類のメニューです。</p></div>
+</section>
+
+<section class="stepcard" id="s4">
+  <span class="num">ステップ 4</span>
+  <h2>新しいチャットで、いつもの指示文をもう一度貼る</h2>
+  <ol class="steps">
+    <li>新しいチャットを開きます。</li>
+    <li>いつも貼っている指示文を、そのまま貼ります。変えたり足したりしません。</li>
+  </ol>
+  <div class="card info"><p>止まったチャットでやり直すより、新しいチャットのほうが確実です。ただし新しいチャットだけでは直りません。ステップ 3 を済ませてからです。</p></div>
+</section>
+
+<section class="stepcard" id="s5">
+  <span class="num">ステップ 5</span>
+  <h2>翻訳が終わったら「代わりに承認」に戻す</h2>
+  <p>ステップ 3 と同じボタンをおして、「代わりに承認」をえらびます。</p>
+  <div class="card ng">
+    <p>アプリの説明では、フルアクセスがオンの間、AI は承認なしにパソコンのどのファイルでも編集でき、ネットにつながるコマンドも実行できます。安全のため、翻訳が終わったら必ず戻します。</p>
+  </div>
+</section>
+
+<div class="card info">
+  <p><b>もし直らなかったら</b></p>
+  <p>自分でほかのことをためさず、次を講師に送ってください。</p>
+  <ul class="plain">
+    <li>止まったときの Codex の返事の画面(スクリーンショット)</li>
+    <li>入力欄の下のボタンと、開いたメニューの画面(スクリーンショット)</li>
+    <li>ステップ 2 で「requirements.toml により無効になっています」などが出たかどうか</li>
+  </ul>
+  <p>パスワードや、人に見せてはいけない長い文字は写さないでください。</p>
+</div>
+
+<h2>用語メモ</h2>
+<dl>
+  <dt>ENOTFOUND / getaddrinfo failed</dt><dd>「ネットの住所が見つからない」という意味のエラー文です。ネットにつながっていないときに出ます。</dd>
+  <dt>権限</dt><dd>Codex がどこまで勝手にやってよいかのきまりです。入力欄の下のボタンで切り替えます。</dd>
+  <dt>フルアクセス</dt><dd>ネットもパソコン中のファイルも、制限なしで使える権限です。</dd>
+  <dt>config.toml</dt><dd>Codex の設定ファイルです。今回の止まり方には効かないので、さわらなくて大丈夫です。</dd>
+</dl>
+
+<footer>
+  <p><b>出典</b></p>
+  <p>公式ドキュメント(権限の切り替え・初期状態でネットがオフ・フルアクセスの説明)</p>
+  <p><a href="https://learn.chatgpt.com/docs/permission-modes" target="_blank" rel="noopener">https://learn.chatgpt.com/docs/permission-modes</a><br>
+  <a href="https://learn.chatgpt.com/docs/agent-approvals-security" target="_blank" rel="noopener">https://learn.chatgpt.com/docs/agent-approvals-security</a></p>
+  <p>アプリの表示(設定画面・メニュー・確認画面の文言、2026-11-21 時点で確認)</p>
+</footer>
+</main>
+</body>
+</html>
